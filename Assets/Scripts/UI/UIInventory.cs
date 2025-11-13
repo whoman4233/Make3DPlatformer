@@ -33,8 +33,8 @@ public class UIInventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = CharacterManager.Instance.player.Controller;
-        condition = CharacterManager.Instance.player.condition;
+        controller = CharacterManager.Instance.Player.Controller;
+        condition = CharacterManager.Instance.Player.condition;
         dropPos = CharacterManager.Instance.Player.dropPosition;
 
         controller.inventory += Toggle;
@@ -112,7 +112,7 @@ public class UIInventory : MonoBehaviour
             emptySlot.item = data;
             emptySlot.quantity = 1;
             UpdateUI();
-            CharacterManager.Instance.player.itemData = null;
+            CharacterManager.Instance.Player.itemData = null;
             return;
         }
 
@@ -190,23 +190,29 @@ public class UIInventory : MonoBehaviour
 
     public void OnUseButton()
     {
-        if(selectedItem.type == ItemType.Consumable)
-        {
-            for(int i = 0; i< selectedItem.consumables.Length; i++)
-            {
-                switch(selectedItem.consumables[i].type)
-                {
-                    case ConsumableType.Health:
-                        condition.Heal(selectedItem.consumables[i].value);
-                        break;
+        if (selectedItem.type != ItemType.Consumable) return;
 
-                    case ConsumableType.Hunger:
-                        condition.Eat(selectedItem.consumables[i].value);
-                        break;
-                }
+        var buffs = CharacterManager.Instance.Player.GetComponent<PlayerBuffs>();
+
+        for (int i = 0; i < selectedItem.consumables.Length; i++)
+        {
+            var c = selectedItem.consumables[i];
+            switch (c.type)
+            {
+                case ConsumableType.Health:
+                    condition.Heal(c.value);
+                    break;
+
+                case ConsumableType.SpeedBoost:
+                    if (buffs) buffs.ApplySpeedBoost(c.value, c.duration);
+                    break;
+
+                case ConsumableType.JumpBoost:
+                    if (buffs) buffs.ApplyJumpBoost(c.value, c.duration);
+                    break;
             }
-            RemoveSelectedItem();
         }
+        RemoveSelectedItem();
     }
 
     public void OnDropButton()

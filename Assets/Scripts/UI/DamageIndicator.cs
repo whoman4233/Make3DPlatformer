@@ -13,7 +13,7 @@ public class DamageIndicator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CharacterManager.Instance.player.condition.onTakeDamage += Flash;
+        CharacterManager.Instance.Player.condition.onTakeDamage += Flash;
     }
 
     public void Flash()

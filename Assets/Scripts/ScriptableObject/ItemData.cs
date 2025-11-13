@@ -12,14 +12,16 @@ public enum ItemType
 public enum ConsumableType
 {
     Health,
-    Hunger
+    SpeedBoost,
+    JumpBoost
 }
 
 [Serializable]
 public class ItemDataCunsumable
 {
-    public ConsumableType type;
-    public float value;
+    public ConsumableType type; 
+    public float value;// Health/Hunger는 양, SpeedBoost는 배수(예: 1.5f)
+    public float duration = 5f;
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]

@@ -58,7 +58,7 @@ public class NPC : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.player.transform.position);
+        playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.Player.transform.position);
 
         animator.SetBool("Moving", AIState != AIState.Idle);
 
